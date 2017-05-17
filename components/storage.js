@@ -25,6 +25,17 @@ var citizen = require('supe'),
 
       break;
 
+      case 'list-stored-files':
+
+        fs_extra.readdir( 'storage', function( err, files ){
+
+          if( err ) throw err;
+
+          citizen.noticeboard.notify( 'stored-files', files );
+          ack();
+        });
+
+      break;
 
       default:
         console.log( 'possibly malformed mail', envelope );
