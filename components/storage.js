@@ -1,9 +1,9 @@
-var supe = require('supe'),
+var citizen = require('supe'),
     path = require('path'),
     fs_extra = require('fs-extra');
 
 // handle incoming mail
-  supe.mail.receive( function( envelope, ack ){
+  citizen.mail.receive( function( envelope, ack ){
     
     var mail = envelope.msg;
 

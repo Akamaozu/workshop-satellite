@@ -1,11 +1,11 @@
-var supe = require('supe'),
+var citizen = require('supe'),
     Task = require('cjs-task'),
     request = require('request'),
 
     image_cache = [];
 
 // handle incoming mail
-  supe.mail.receive( function( envelope, ack ){
+  citizen.mail.receive( function( envelope, ack ){
 
     var mail = envelope.msg;
 
@@ -18,7 +18,7 @@ var supe = require('supe'),
           if( err ) throw err;
           
           console.log( 'picture taken' );
-          supe.noticeboard.notify( 'picture-taken', image_metadata );
+          citizen.noticeboard.notify( 'picture-taken', image_metadata );
         });
 
       break;
