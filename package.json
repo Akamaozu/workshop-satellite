@@ -1,0 +1,18 @@
+{
+  "name": "workshop-satellite",
+  "version": "1.0.0",
+  "description": "Fault-Tolerant Node.js Satellite",
+  "main": "satellite.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node satellite.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cjs-task": "0.0.8",
+    "fs-extra": "^3.0.1",
+    "request": "^2.81.0",
+    "supe": "^0.1.1"
+  }
+}
