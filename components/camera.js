@@ -46,7 +46,7 @@ function take_a_pic( callback ){
     });
   });
 
-  task.step( 'select image from cache', function(){
+  task.step( 'select random image from cache', function(){
 
     var image_metadata = image_cache.splice( Math.floor( Math.random() * image_cache.length ), 1 );
 
@@ -58,7 +58,7 @@ function take_a_pic( callback ){
 
     var image_metadata = task.get( 'image-metadata' );
 
-    request( image_metadata.url , { encoding: 'binary' }, function( err, resp, body ){
+    request( image_metadata.url, { encoding: 'binary' }, function( err, resp, body ){
 
       if( err ) return task.end( err );
 
@@ -77,11 +77,10 @@ function take_a_pic( callback ){
     if( err ){
 
       if( image_metadata ) image_cache.push( image_metadata );
-
       return callback( err );
     }
 
-    callback( null, image_metadata );
+    else callback( null, image_metadata );
   });
 
   task.start();
