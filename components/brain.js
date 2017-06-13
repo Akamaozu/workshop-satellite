@@ -1,19 +1,20 @@
-var citizen = require('supe');
+var citizen = require('supe'),
+    verbose = process.env.BRAIN_VERBOSE_LOGGING === 'true' || false;
 
-// take pics every 10 seconds
+// take pics periodically
   setInterval( function(){
 
-    console.log( 'initiating periodic snapshot' );
+    if( verbose ) console.log( 'initiating periodic snapshot' );
     citizen.mail.send({ to: 'camera' }, { action: 'take-picture' });
 
-  }, 1000 * 10 );
+  }, 1000 * ( process.env.PERIODIC_PICTURE_TAKING_INTERVAL_SECS || 60 ) );
 
 // save all pictures taken by the camera
   citizen.noticeboard.watch( 'picture-taken', 'save-picture', function( msg ){
 
     var image = msg.notice;
 
-    console.log( 'initiating picture storage' );
+    if( verbose ) console.log( 'initiating picture storage' );
 
     citizen.mail.send({ to: 'storage' }, { 
     
