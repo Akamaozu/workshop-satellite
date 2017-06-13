@@ -62,6 +62,7 @@ function take_a_pic( callback ){
 
       if( err ) return task.end( err );
 
+      image_metadata.content_type = 'binary';
       image_metadata.content = body;
       image_metadata.ext = 'jpg';
       
@@ -136,7 +137,7 @@ function prime_image_cache( callback ){
       });
     });
 
-    console.log( 'Total Images Found: ' + images_metadata.length );
+    console.log( 'Total Images with Current Config: ' + images_metadata.length );
     console.log( 'Keywords: ' + keywords.join( ', ' ) );
 
     task.next();
