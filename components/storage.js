@@ -32,7 +32,7 @@ var citizen = require('supe'),
 
       case 'get-file':
 
-      var filename = mail.name;
+        var filename = mail.name;
 
         if( !filename ){
 
@@ -40,7 +40,7 @@ var citizen = require('supe'),
           ack();
         }
 
-        fs_extra.readFile( path.join( 'storage', filename ), function( err, content ){
+        fs_extra.readFile( path.join( 'storage', filename ), 'binary', function( err, content ){
 
           var response = { name: filename, success: false };
 
@@ -54,7 +54,7 @@ var citizen = require('supe'),
 
           if( verbose ) console.log( 'action=get file=' + filename + ' requester=' + sender );
 
-          citizen.noticeboard.notify( 'get-file-result', response );
+          citizen.noticeboard.notify( 'get-file-result', { name: filename, content: response, type: 'binary' });
           ack();
         });
 
@@ -66,7 +66,12 @@ var citizen = require('supe'),
 
           var response = { success: false };
 
-          if( !err ) response.files = files;
+          if( !err ){
+
+            response.success = true;
+            response.files = files;
+            console.log( response );
+          } 
 
           if( verbose ) console.log( 'action=list requester=' + sender );
 

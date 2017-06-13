@@ -15,8 +15,10 @@ var path = require('path'),
   supervisor.register( 'brain', path.join( __dirname, '/components/brain.js' ) );
   supervisor.register( 'camera', path.join( __dirname, '/components/camera.js' ) );
   supervisor.register( 'storage', path.join( __dirname, '/components/storage.js' ) );
+  supervisor.register( 'antenna', path.join( __dirname, '/components/antenna.js' ) );
 
 // start components
   supervisor.start( 'brain' );
   supervisor.start( 'camera' );
   supervisor.start( 'storage' );
+  supervisor.start( 'antenna' );

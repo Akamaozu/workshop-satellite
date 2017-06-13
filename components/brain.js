@@ -25,3 +25,48 @@ var citizen = require('supe'),
       content: image.content,
     }); 
   });
+
+// transmit stored files when connected to base station
+  citizen.noticeboard.watch( 'base-station-connection-status-update', 'upload-stored-files', function( msg ){
+
+    var data = msg.notice,
+        list;
+
+    if( data.connected ){
+
+      if( verbose ) console.log( 'initiating storage upload' );
+        
+      citizen.noticeboard.watch( 'get-file-result', 'send-for-upload', function( msg ){
+
+        var file = msg.notice;
+
+        if( list.indexOf( file.name ) == -1 ) return;
+
+        citizen.noticeboard.notify( 'upload-file', file );
+        list.splice( list.indexOf( file.name ), 1 );
+      });
+
+      citizen.noticeboard.watch( 'list-stored-files-result', 'send-for-upload', function( msg ){
+
+        var response = msg.notice;
+
+        if( !response.success ) return;
+
+        console.log( 'fetching storage content for upload' );
+
+        list = response.files;
+
+        list.forEach( function( file ){
+          citizen.mail.send({ to: 'storage' }, { action: 'get-file', name: file });
+        });
+      });
+
+      citizen.mail.send({ to: 'storage' }, { action: 'list-stored-files' });
+    }
+
+    else{
+
+      citizen.noticeboard.ignore( 'get-file-result', 'send-for-upload' );
+      citizen.noticeboard.ignore( 'list-stored-files-result', 'send-for-upload' );
+    } 
+  });
