@@ -1,6 +1,7 @@
 var citizen = require('supe'),
     Task = require('cjs-task'),
     request = require('request'),
+    verbose = process.env.CAMERA_VERBOSE_LOGGING === 'true' || false,
 
     image_cache = [];
 
@@ -109,7 +110,8 @@ function prime_image_cache( callback ){
 
       url: 'https://images-api.nasa.gov/search',      
       qs: {
-        keywords: 'Hubble Space Telescope',
+        q: process.env.CAMERA_SUBJECT_QUERYSTRING || 'surface',
+        keywords: process.env.CAMERA_SUBJECT_KEYWORDS || 'mars, moon, jupiter',
         media_type: 'image'
       }
 
@@ -137,8 +139,7 @@ function prime_image_cache( callback ){
       });
     });
 
-    console.log( 'Total Images with Current Config: ' + images_metadata.length );
-    console.log( 'Keywords: ' + keywords.join( ', ' ) );
+    if( verbose ) console.log( 'image metadata cached. total=' + images_metadata.length + ' keywords=' + keywords.join( ', ' ) );
 
     task.next();
   });
