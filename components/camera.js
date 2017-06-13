@@ -19,16 +19,16 @@ var citizen = require('supe'),
           
           console.log( 'picture taken' );
           citizen.noticeboard.notify( 'picture-taken', image_metadata );
+          ack();
         });
 
       break;
 
       default:
         console.log( 'possibly malformed mail', envelope );
+        ack();
       break;
     }
-
-    ack();
   });
 
 function take_a_pic( callback ){
