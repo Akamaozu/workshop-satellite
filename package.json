@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "cjs-task": "0.0.8",
+    "dotenv": "^4.0.0",
     "fs-extra": "^3.0.1",
     "request": "^2.81.0",
     "supe": "^0.1.1"

@@ -1,5 +1,10 @@
-var supervisor = require('supe')({ retries: 3, duration: 3 }),
-    path = require('path');
+require('dotenv').config();
+
+var path = require('path'),
+    supervisor = require('supe')({
+      retries: process.env.CITIZEN_REVIVES_PER_DURATION,
+      duration: process.env.CITIZEN_REVIVE_DURATION_MINS
+    });
 
 // load helpers to make supervising components easier
   supervisor.use( require( './utils/supervisor/prefix-output-with-timestamp' ) );
