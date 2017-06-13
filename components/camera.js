@@ -125,7 +125,7 @@ function prime_image_cache( callback ){
 
   task.step( 'log image data analysis', function(){
 
-    var image_metadata = task.get( 'images-metadata' ),
+    var images_metadata = task.get( 'images-metadata' ),
         keywords = [];
 
     images_metadata.forEach( function( item ){
