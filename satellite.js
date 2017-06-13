@@ -7,35 +7,11 @@ var supervisor = require('supe')({ retries: 3, duration: 3 }),
   supervisor.use( require( './utils/supervisor/pipe-citizen-std-outputs' ) );
 
 // register satellite component control code
+  supervisor.register( 'brain', path.join( __dirname, '/components/brain.js' ) );
   supervisor.register( 'camera', path.join( __dirname, '/components/camera.js' ) );
   supervisor.register( 'storage', path.join( __dirname, '/components/storage.js' ) );
 
-// behavior
-  
-  // save pictures taken by the camera
-    supervisor.noticeboard.watch( 'picture-taken', 'save-picture', function( msg ){
-
-      var image = msg.notice,
-          storage = supervisor.get( 'storage' );
-
-      storage.mail.send({ 
-      
-        action: 'save-file',
-
-        name: image.id + '.' + image.ext,
-        content: image.content,
-        content_type: 'binary' 
-      }); 
-    });
-
-  // take pics every 10 seconds
-    setInterval( function(){
-
-      var camera = supervisor.get( 'camera' );
-      camera.mail.send({ action: 'take-picture' });
-
-    }, 1000 * 10 );
-
 // start components
+  supervisor.start( 'brain' );
   supervisor.start( 'camera' );
   supervisor.start( 'storage' );
