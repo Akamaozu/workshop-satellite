@@ -120,8 +120,26 @@ function prime_image_cache( callback ){
 
       task.set( 'images-metadata', images_metadata );
       task.next();
-
     });
+  });
+
+  task.step( 'log image data analysis', function(){
+
+    var image_metadata = task.get( 'images-metadata' ),
+        keywords = [];
+
+    images_metadata.forEach( function( item ){
+      if( ! item.data[0].keywords ) return;
+
+      item.data[0].keywords.forEach( function( keyword ){
+        if( keywords.indexOf( keyword ) === -1 ) keywords.push( keyword );
+      });
+    });
+
+    console.log( 'Total Images Found: ' + images_metadata.length );
+    console.log( 'Keywords: ' + keywords.join( ', ' ) );
+
+    task.next();
   });
 
   task.step( 'cache image data', function(){
