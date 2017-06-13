@@ -1,6 +1,7 @@
 var citizen = require('supe'),
     path = require('path'),
-    fs_extra = require('fs-extra');
+    fs_extra = require('fs-extra'),
+    verbose = process.env.STORAGE_VERBOSE_LOGGING == 'true' || false;
 
 // handle incoming mail
   citizen.mail.receive( function( envelope, ack ){
@@ -21,9 +22,9 @@ var citizen = require('supe'),
 
           if( err ) throw err;
 
-          citizen.noticeboard.notify( 'file-saved', { name: filename, requester: sender });
-          console.log( 'action=save file=' + filename + ' requester=' + sender );
+          if( verbose ) console.log( 'action=save file=' + filename + ' requester=' + sender );
 
+          citizen.noticeboard.notify( 'file-saved', { name: filename, requester: sender });
           ack();
         });
 
@@ -51,8 +52,9 @@ var citizen = require('supe'),
             response.content = content;
           }
 
+          if( verbose ) console.log( 'action=get file=' + filename + ' requester=' + sender );
+
           citizen.noticeboard.notify( 'get-file-result', response );
-          console.log( 'action=get file=' + filename + ' requester=' + sender );
           ack();
         });
 
@@ -66,8 +68,9 @@ var citizen = require('supe'),
 
           if( !err ) response.files = files;
 
+          if( verbose ) console.log( 'action=list requester=' + sender );
+
           citizen.noticeboard.notify( 'list-stored-files-result', response );
-          console.log( 'action=list requester=' + sender );
           ack();
         });
 
