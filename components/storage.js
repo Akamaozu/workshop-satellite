@@ -6,7 +6,8 @@ var citizen = require('supe'),
 // handle incoming mail
   citizen.mail.receive( function( envelope, ack ){
     
-    var mail = envelope.msg;
+    var mail = envelope.msg,
+        sender = envelope.from;
 
     switch( mail.action ){
 
@@ -14,9 +15,7 @@ var citizen = require('supe'),
 
         var filename = mail.name,
             content = mail.content,
-            type = mail.content_type || 'utf8',
-
-            sender = envelope.from;
+            type = mail.content_type || 'utf8';
 
         fs_extra.outputFile( path.join( 'storage', filename ), content, type, function( err ){
 
@@ -70,7 +69,6 @@ var citizen = require('supe'),
 
             response.success = true;
             response.files = files;
-            console.log( response );
           } 
 
           if( verbose ) console.log( 'action=list requester=' + sender );
