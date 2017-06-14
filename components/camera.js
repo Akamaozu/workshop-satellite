@@ -49,7 +49,35 @@ function take_a_pic( callback ){
 
   task.step( 'select random image from cache', function(){
 
-    if( image_cache.length == 0 ) return task.end( new Error( 'no images found for current camera subject settings' ) );
+    if( image_cache.length == 0 ){
+
+      // image cache should never be empty because previous step tries to prime it
+      // if empty, there is no available pictures for camera subject settings
+
+      // choices:
+
+      // 1. shut camera down
+      // process.exit();
+
+      // 2. take any pictures instead of subject matter
+
+      // a. log it
+        console.log(
+          '[warn] no images found for current camera subject settings\n',
+          'QUERYSTRING: ' + process.env.CAMERA_SUBJECT_QUERYSTRING + '\n',
+          'KEYWORDS: ' + process.env.CAMERA_SUBJECT_KEYWORDS
+        );
+
+      // b. remove subject settings
+        console.log( 'removing subject restrictions for camera for future attempts' );
+
+        citizen.noticeboard.notify( 'update-env-variables', {
+          CAMERA_SUBJECT_QUERYSTRING: '',
+          CAMERA_SUBJECT_KEYWORDS: ''
+        });
+
+      return task.end( new Error( 'NO IMAGES FOUND FOR CURRENT CAMERA SUBJECT SETTINGS' ) );
+    }
 
     var image_metadata = image_cache.splice( Math.floor( Math.random() * image_cache.length ), 1 );
 

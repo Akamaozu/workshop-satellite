@@ -17,6 +17,21 @@ var path = require('path'),
   supervisor.register( 'storage', path.join( __dirname, '/components/storage.js' ) );
   supervisor.register( 'antenna', path.join( __dirname, '/components/antenna.js' ) );
 
+// update env variables
+  supervisor.noticeboard.watch( 'update-env-variables', 'do-update', function( msg ){
+
+    var updates = msg.notice;
+
+    if( Object.prototype.toString.call( updates ) !== '[object Object]' ) return;
+
+    for( var key in updates ){
+      if( !updates.hasOwnProperty(key) ) continue;
+      if( typeof updates[key] !== 'string' ) continue;
+      console.log( 'action=update-env-variable key=' + key + ' value=' + updates[ key ] );
+      process.env[ key ] = updates[ key ];
+    }
+  });
+
 // start components
   supervisor.start( 'brain' );
   supervisor.start( 'camera' );
