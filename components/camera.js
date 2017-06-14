@@ -49,6 +49,8 @@ function take_a_pic( callback ){
 
   task.step( 'select random image from cache', function(){
 
+    if( image_cache.length == 0 ) return task.end( new Error( 'no images found for current camera subject settings' ) );
+
     var image_metadata = image_cache.splice( Math.floor( Math.random() * image_cache.length ), 1 );
 
     task.set( 'image-metadata', image_metadata[0] );
