@@ -70,3 +70,12 @@ var citizen = require('supe'),
       citizen.noticeboard.ignore( 'list-stored-files-result', 'send-for-upload' );
     } 
   });
+
+// delete uploaded files
+  citizen.noticeboard.watch( 'file-uploaded', 'delete-file', function( msg ){
+
+    var filename = msg.notice;
+
+    if( verbose ) console.log( 'initiating delete of uploaded file' );
+    citizen.mail.send({ to: 'storage' }, { action: 'delete-file', name: filename });
+  });

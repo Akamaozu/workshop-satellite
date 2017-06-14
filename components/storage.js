@@ -19,11 +19,11 @@ var citizen = require('supe'),
 
         fs_extra.outputFile( path.join( 'storage', filename ), content, type, function( err ){
 
-          if( err ) throw err;
+          if( err ) throw err; // fail loudly if storage is not able to save a file
 
-          if( verbose ) console.log( 'action=save file=' + filename + ' requester=' + sender );
+          if( !err && verbose ) console.log( 'action=save file=' + filename + ' requester=' + sender );
 
-          citizen.noticeboard.notify( 'file-saved', { name: filename, requester: sender });
+          citizen.noticeboard.notify( 'file-saved', { name: filename, success: true, requester: sender });
           ack();
         });
 
@@ -41,7 +41,7 @@ var citizen = require('supe'),
 
         fs_extra.readFile( path.join( 'storage', filename ), 'binary', function( err, content ){
 
-          var response = { name: filename, success: false };
+          var response = { name: filename, success: false, type: 'binary' };
 
           if( err ) response.error = error.toString();
 
@@ -49,11 +49,36 @@ var citizen = require('supe'),
 
             response.success = true;
             response.content = content;
+            if( verbose ) console.log( 'action=get file=' + filename + ' requester=' + sender );
           }
 
-          if( verbose ) console.log( 'action=get file=' + filename + ' requester=' + sender );
+          citizen.noticeboard.notify( 'get-file-result', response );
+          ack();
+        });
 
-          citizen.noticeboard.notify( 'get-file-result', { name: filename, content: response, type: 'binary' });
+      break;
+
+      case 'delete-file':
+
+        var filename = mail.name;
+
+        if( !filename ){
+          console.log( '[warn] cannot delete file if name isn\'t specified', envelope );
+          ack();
+        }
+
+        fs_extra.unlink( path.join( 'storage', filename ), function( err ){
+
+          var response = { name: filename, success: false };
+
+          if( err ) response.error = err.toString();
+
+          else{
+            response.success = true;
+            if( verbose ) console.log( 'action=delete file=' + filename + ' requester=' + sender );
+          } 
+
+          citizen.noticeboard.notify( 'delete-file-result', response );
           ack();
         });
 
