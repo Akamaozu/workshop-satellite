@@ -9,6 +9,10 @@ Start
 ---
 `npm start` or `node satellite`
 
+View Uploads
+---
+[https://torontojs-basestation.herokuapp.com](https://torontojs-basestation.herokuapp.com)
+
 Change Satellite Name
 ---
 1. open .env file
