@@ -39,7 +39,7 @@ var citizen = require('supe'),
           ack();
         }
 
-        fs_extra.readFile( path.join( 'storage', filename ), 'binary', function( err, content ){
+        fs_extra.readFile( path.join( 'storage', filename ), function( err, content ){
 
           var response = { name: filename, success: false, type: 'binary' };
 
