@@ -2,8 +2,11 @@ var citizen = require('supe'),
     socketio = require('socket.io-client')( 'https://torontojs-basestation.herokuapp.com/' ),
     verbose = process.env.ANTENNA_VERBOSE_LOGGING == 'true' || false;
 
-socketio.emit( 'name', process.env.SATELLITE_NAME );
 socketio.emit( 'connection-status-request' );
+
+socketio.on( 'connect', function(){
+  socketio.emit( 'name', process.env.SATELLITE_NAME );
+});
 
 socketio.on( 'connection-status', function( is_connected ){
 
