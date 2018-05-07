@@ -52,7 +52,7 @@ var citizen = require('supe'),
 
         if( !response.success ) return;
 
-        console.log( 'fetching storage content for upload' );
+        if( verbose ) console.log( 'fetching storage content for upload' );
 
         list = response.files;
 

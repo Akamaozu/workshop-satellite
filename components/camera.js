@@ -18,7 +18,7 @@ var citizen = require('supe'),
 
           if( err ) throw err;
           
-          console.log( 'picture taken' );
+          if( verbose ) console.log( 'action=picture-taken file=' + image_metadata.id + '.' + image_metadata.ext );
           citizen.noticeboard.notify( 'picture-taken', image_metadata );
           ack();
         });
@@ -62,21 +62,19 @@ function take_a_pic( callback ){
       // 2. take any pictures instead of subject matter
 
       // a. log it
-        console.log(
-          '[warn] no images found for current camera subject settings\n',
-          'QUERYSTRING: ' + process.env.CAMERA_SUBJECT_QUERYSTRING + '\n',
-          'KEYWORDS: ' + process.env.CAMERA_SUBJECT_KEYWORDS
-        );
+        console.log( '[warn] NO IMAGES FOUND FOR CURRENT CAMERA SUBJECT SETTINGS' );
+        console.log( '[warn] QUERYSTRING: ' + process.env.CAMERA_SUBJECT_QUERYSTRING );
+        console.log( '[warn] KEYWORDS: ' + process.env.CAMERA_SUBJECT_KEYWORDS );
 
       // b. remove subject settings
-        console.log( 'removing subject restrictions for camera for future attempts' );
+        console.log( '[info] REMOVING SUBJECT RESTRICTIONS FOR FUTURE ATTEMPTS' );
 
         citizen.noticeboard.notify( 'update-env-variables', {
           CAMERA_SUBJECT_QUERYSTRING: '',
           CAMERA_SUBJECT_KEYWORDS: ''
         });
 
-      return task.end( new Error( 'NO IMAGES FOUND FOR CURRENT CAMERA SUBJECT SETTINGS' ) );
+      return task.end( new Error( 'no images found for current camera subject settings' ) );
     }
 
     var image_metadata = image_cache.splice( Math.floor( Math.random() * image_cache.length ), 1 );
