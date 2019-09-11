@@ -61,11 +61,19 @@ var citizen = require('supe'),
         });
       });
 
+      citizen.noticeboard.watch( 'file-saved', 'send-for-upload', function( msg ){
+        var file = msg.notice;
+
+        list.push( file.name );
+        citizen.mail.send({ to: 'storage' }, { action: 'get-file', name: file.name });
+      });
+
       citizen.mail.send({ to: 'storage' }, { action: 'list-stored-files' });
     }
 
     else{
 
+      citizen.noticeboard.ignore( 'file-saved', 'send-for-upload' );
       citizen.noticeboard.ignore( 'get-file-result', 'send-for-upload' );
       citizen.noticeboard.ignore( 'list-stored-files-result', 'send-for-upload' );
     } 
