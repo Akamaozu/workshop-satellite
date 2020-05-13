@@ -93,6 +93,7 @@ function take_a_pic( callback ){
 
       image_metadata.content_type = 'binary';
       image_metadata.content = body;
+      image_metadata.timestamp = new Date();
       image_metadata.ext = 'jpg';
       
       task.set( 'image-metadata', image_metadata );
