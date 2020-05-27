@@ -1,5 +1,5 @@
 var citizen = require('supe'),
-    socketio = require('socket.io-client')( 'http://localhost:5000' ),
+    socketio = require('socket.io-client')( 'https://torontojs-basestation.herokuapp.com/' ),
     verbose = process.env.ANTENNA_VERBOSE_LOGGING == 'true' || false;
     var startTime = new Date()
 
