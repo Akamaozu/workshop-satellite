@@ -5,8 +5,6 @@ var citizen = require('supe'),
 
 socketio.emit( 'connection-status-request' );
 
-
-
 socketio.on( 'connect', function(){
   socketio.emit( 'name', process.env.SATELLITE_NAME );
 });
